@@ -15,13 +15,20 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 
-  it "is valid when required required attributes are present" do
-    expect(FactoryGirl.build(:user)).to be_valid
+  describe 'validations' do
+
+    it { should validate_presence_of(:username) }
+
+    it { should validate_presence_of(:password_digest) }
+
+    it { should validate_presence_of(:session_token) }
+
   end
 
-  context 'is invalid' do
-    specify 'when name is blank' do
-      expect(FactoryGirl.build(:user, username:'')).not_to be_valid
-    end
+  describe 'associations' do
+
+    it { should have_many(:goals) }
+
   end
+
 end

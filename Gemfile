@@ -40,10 +40,14 @@ group :development, :test do
   gem 'pry-rails'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
-
+  gem 'faker'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'shoulda-matchers'
+
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -59,11 +63,5 @@ group :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'launchy'
   gem 'capybara'
-
-  gem 'shoulda-matchers'
-
-  gem 'factory_girl_rails'
-
-  gem 'faker'
 
 end

@@ -40,53 +40,48 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
-=begin
-  # These two settings work together to allow you to limit a spec run
-  # to individual examples or groups you care about by tagging them with
-  # `:focus` metadata. When nothing is tagged with `:focus`, all examples
-  # get run.
-  config.filter_run :focus
-  config.run_all_when_everything_filtered = true
+end
 
-  # Allows RSpec to persist some state between runs in order to support
-  # the `--only-failures` and `--next-failure` CLI options. We recommend
-  # you configure your source control system to ignore this file.
-  config.example_status_persistence_file_path = "spec/examples.txt"
+def sign_up(username)
+  visit "/users/new"
+  fill_in "Username", with: username
+  fill_in "Password", with: 'abcdef'
+  click_button 'Sign Up'
+end
 
-  # Limits the available syntax to the non-monkey patched syntax that is
-  # recommended. For more details, see:
-  #   - http://rspec.info/blog/2012/06/rspecs-new-expectation-syntax/
-  #   - http://www.teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
-  #   - http://rspec.info/blog/2014/05/notable-changes-in-rspec-3/#zero-monkey-patching-mode
-  config.disable_monkey_patching!
+def sign_up_as_ginger_baker
+  sign_up("ginger_baker")
+end
 
-  # Many RSpec users commonly either run the entire suite or an individual
-  # file, and it's useful to allow more verbose output when running an
-  # individual spec file.
-  if config.files_to_run.one?
-    # Use the documentation formatter for detailed output,
-    # unless a formatter has already been configured
-    # (e.g. via a command-line flag).
-    config.default_formatter = 'doc'
-  end
+def sign_up_as_eric_clapton
+  sign_up("eric_clapton")
+end
 
-  # Print the 10 slowest examples and example groups at the
-  # end of the spec run, to help surface which specs are running
-  # particularly slow.
-  config.profile_examples = 10
+def sign_in(username)
+  visit "/session/new"
+  fill_in "Username", with: username
+  fill_in "Password", with: 'abcdef'
+  click_button 'Sign In'
+end
 
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
-  config.order = :random
+def sign_in_as_ginger_baker
+  sign_in("ginger_baker")
+end
 
-  # Seed global randomization in this process using the `--seed` CLI option.
-  # Setting this allows you to use `--seed` to deterministically reproduce
-  # test failures related to randomization by passing the same `--seed` value
-  # as the one that triggered the failure.
-  Kernel.srand config.seed
-=end
+def sign_in_as_eric_clapton
+  sign_in("eric_clapton")
+end
+
+def sign_out
+  click_button 'Log Out'
+end
+
+def make_goal(title=nil, body=nil)
+  title ||= Faker::Hipster.word
+  body ||= Faker::Hipster.paragraph
+
+  visit '/goals/new'
+  fill_in 'Title', with: title
+  fill_in 'Body', with: body
+  click_button "Create New Goal"
 end

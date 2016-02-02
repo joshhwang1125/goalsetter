@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
+  
+
   describe "GET #new" do
     it "responds successfullly with an HTTP 200 status code" do
       get :new

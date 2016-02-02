@@ -1,12 +1,60 @@
 require 'spec_helper'
 require 'rails_helper'
 
-feature "the signup process" do
+feature "Viewing Index" do
 
-  scenario "has a new user page" do
-    visit new_user_url
-    expect(page).to have_content "New User"
+  before(:each) do
+    @user = FactoryGirl.create(:user)
+    @goal = FactoryGirl.build(:goal, user_id: @user.id)
+    @shared_goal = FactoryGirl.build(:goal, user_id: @user.id, shared: true)
   end
+
+  scenario "visit index" do
+    visit goals_url
+    expect(page).to_not have_content @goal.title
+    expect(page).to have_content @shared_goal.title
+  end
+
+  scenario "cannot post new goal" do
+    visit new_goal_url
+    expect(page).to have_content 'Goals Index'
+  end
+end
+
+feature "Creating goals" do
+
+  before(:each) do
+    sign_up_as_ginger_baker
+    visit '/goals/new'
+  end
+
+  scenario 'has a new goal page' do
+    expect(page).to have_content 'New Goal'
+  end
+
+  scenario 'takes a title and a body' do
+    expect(page).to have_content 'Title'
+    expect(page).to have_content 'Body'
+  end
+
+  scenario 'redirects to the goal index when sucessful' do
+    @title = Faker::Hipster.word
+    @body = Faker::Hipster.paragraph
+    make_goal(@title, @body)
+    expect(page).to have_content 'Goals Index'
+    expect(page).to have_content @title
+  end
+
+  scenario 'redirects to new goals on failure' do
+    click_on 'Create New Goal'
+    expect(page).to have_content 'New Goal'
+  end
+
+end
+
+feature "Editing goals" do
+
+end
 
 
   feature "signing up a user" do
@@ -57,23 +105,6 @@ feature "logging in" do
     scenario "redirect to User#show page after sign in" do
       expect(page).to have_content "Homepage"
     end
-
-  end
-
-  scenario "rejects a blank password" do
-    visit new_session_url
-    @fake = FactoryGirl.create(:user)
-    fill_in "username", with: @fake.username
-    click_on 'Log In'
-    expect(page).to have_content "Invalid Credentials"
-  end
-
-  scenario "rejects a blank username" do
-    visit new_session_url
-    @fake = FactoryGirl.create(:user)
-    fill_in "password", with: @fake.password
-    click_on 'Log In'
-    expect(page).to have_content "Invalid Credentials"
   end
 
 end
